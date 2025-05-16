@@ -13,7 +13,7 @@ public class WebConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry){
-                registry.addMapping("/api/**")
+                registry.addMapping("/**")
                         .allowedOrigins("https://black-mushroom-0d2324d00.6.azurestaticapps.net")
                         .allowedMethods("GET","POST,PUT","DELETE");
             }
