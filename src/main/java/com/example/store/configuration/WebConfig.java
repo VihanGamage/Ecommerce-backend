@@ -15,7 +15,9 @@ public class WebConfig {
             public void addCorsMappings(CorsRegistry registry){
                 registry.addMapping("/**")
                         .allowedOrigins("https://lively-tree-0257d6e00.6.azurestaticapps.net")
-                        .allowedMethods("GET","POST,PUT","DELETE");
+                        .allowedMethods("GET","POST,PUT","DELETE")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
             }
         };
     }
