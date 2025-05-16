@@ -14,7 +14,7 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry){
                 registry.addMapping("/**")
-                        .allowedOrigins("https://black-mushroom-0d2324d00.6.azurestaticapps.net")
+                        .allowedOrigins("https://lively-tree-0257d6e00.6.azurestaticapps.net")
                         .allowedMethods("GET","POST,PUT","DELETE");
             }
         };
