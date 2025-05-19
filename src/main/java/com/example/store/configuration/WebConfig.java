@@ -14,7 +14,10 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry){
                 registry.addMapping("/**")
-                        .allowedOrigins("https://lively-tree-0257d6e00.6.azurestaticapps.net")
+                        .allowedOrigins(
+                            "http://localhost:3000", // for local dev
+                            "https://lively-tree-0257d6e00.6.azurestaticapps.net"
+                            )
                         .allowedMethods("GET","POST","PUT","DELETE")
                         .allowedHeaders("*")
                         .allowCredentials(true);
