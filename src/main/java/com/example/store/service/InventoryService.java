@@ -1,17 +1,15 @@
-package com.example.store.Service;
+package com.example.store.service;
 
-import com.example.store.DTO.InventoryDTO;
-import com.example.store.DTO.InventoryTableDTO;
-import com.example.store.Entity.Inventory;
-import com.example.store.Entity.Product;
-import com.example.store.Repository.InventoryRepo;
-import com.example.store.Repository.ProductRepo;
+import com.example.store.dto.request.InventoryRequestDto;
+import com.example.store.dto.response.InventoryResponseDto;
+import com.example.store.entity.Inventory;
+import com.example.store.entity.Product;
+import com.example.store.repository.InventoryRepo;
+import com.example.store.repository.ProductRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -19,17 +17,17 @@ public class InventoryService {
     private final InventoryRepo inventoryRepo;
     private final ProductRepo productRepo;
 
-    public Inventory save(InventoryDTO inventoryDTO){
-        Product product = productRepo.findByName(inventoryDTO.getName());
+    public Inventory save(InventoryRequestDto inventoryRequestDTO){
+        Product product = productRepo.findByName(inventoryRequestDTO.getName());
         Inventory inventory = new Inventory();
         inventory.setProduct(product);
-        inventory.setCapacity(inventoryDTO.getCapacity());
+        inventory.setCapacity(inventoryRequestDTO.getCapacity());
         return inventoryRepo.save(inventory);
     }
 
-    public Page<InventoryTableDTO> getAll(Pageable pageable){
+    public Page<InventoryResponseDto> getAll(Pageable pageable){
         return inventoryRepo.findAll(pageable)
-                .map(inventory -> new InventoryTableDTO(
+                .map(inventory -> new InventoryResponseDto(
                         inventory.getId(),
                         inventory.getProduct().getName(),
                         inventory.getCapacity()

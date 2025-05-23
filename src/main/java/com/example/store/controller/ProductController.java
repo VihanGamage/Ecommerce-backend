@@ -1,16 +1,14 @@
-package com.example.store.Controller;
+package com.example.store.controller;
 
-import com.example.store.Entity.Product;
-import com.example.store.Repository.ProductRepo;
-import com.example.store.Service.ProductService;
+import com.example.store.entity.Product;
+import com.example.store.repository.ProductRepo;
+import com.example.store.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController

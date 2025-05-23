@@ -1,4 +1,4 @@
-package com.example.store.Entity;
+package com.example.store.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,12 +9,16 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "product")
-public class Product {
+@Table(name = "inventory")
+public class Inventory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private double price;
+
+    @OneToOne
+    @JoinColumn(name = "productID", nullable = false, unique = true )
+    private Product product;
+
+    private int capacity;
 
 }
