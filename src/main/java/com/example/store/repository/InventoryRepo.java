@@ -17,6 +17,8 @@ public interface InventoryRepo extends JpaRepository<Inventory,Long> {
 
     void deleteByProductId(Long id);
 
+    Inventory findByProduct_Name(String name);
+
     Page<Inventory> findAll(Pageable pageable);
 
 

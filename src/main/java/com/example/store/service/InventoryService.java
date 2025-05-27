@@ -34,8 +34,23 @@ public class InventoryService {
                 ));
     }
 
+    public InventoryResponseDto getInventoryById(Long id){
+        return inventoryRepo.findById(id)
+        .map(inventory -> new InventoryResponseDto(
+            inventory.getId(),
+            inventory.getProduct().getName(),
+            inventory.getCapacity()
+            )).orElse(null);
+    }
+
     public void delete(Long id){
         inventoryRepo.deleteById(id);
+    }
+
+    public Inventory update(Long id, int capacity){
+        Inventory inventory = inventoryRepo.findById(id).orElse(null);
+        inventory.setCapacity(capacity);
+        return inventoryRepo.save(inventory);
     }
 
 }

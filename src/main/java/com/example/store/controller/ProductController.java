@@ -24,7 +24,7 @@ public class ProductController {
         return productService.getAll(pageable);
     }
 
-    @GetMapping("get-{id}")
+    @GetMapping("/get-{id}")
     public Product getProductById(@PathVariable Long id){
         return productService.getProductById(id);
     }

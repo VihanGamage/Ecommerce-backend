@@ -23,6 +23,11 @@ public class InventoryController {
         return inventoryService.getAll(pageable);
     }
 
+    @GetMapping("/get-{id}")
+    public InventoryResponseDto getInventoryById(@PathVariable Long id){
+        return inventoryService.getInventoryById(id);
+    }
+
     @PostMapping("/save")
     public Inventory save(@RequestBody InventoryRequestDto inventoryRequestDTO){
         return inventoryService.save(inventoryRequestDTO);
@@ -31,6 +36,11 @@ public class InventoryController {
     @DeleteMapping("/delete-{id}")
     public void delete(@PathVariable Long id){
         inventoryService.delete(id);
+    }
+
+    @PutMapping("/put-{id}")
+    public Inventory update(@PathVariable Long id, @RequestParam int capacity){
+        return inventoryService.update(id, capacity);
     }
 
 
