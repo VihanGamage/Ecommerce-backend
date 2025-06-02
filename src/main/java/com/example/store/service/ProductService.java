@@ -1,5 +1,7 @@
 package com.example.store.service;
 
+import com.example.store.dto.response.ProductResponseDto;
+import com.example.store.entity.Inventory;
 import com.example.store.entity.Product;
 import com.example.store.repository.InventoryRepo;
 import com.example.store.repository.ProductRepo;
@@ -20,8 +22,22 @@ public class ProductService {
         return productRepo.findAll(pageable);
     }
 
+    public Page<ProductResponseDto> getAllProducts(Pageable pageable){
+        return productRepo.findAll(pageable)
+                .map(product -> new ProductResponseDto(
+                        product.getId(),
+                        product.getName(),
+                        product.getPrice()
+                ));
+    }
+
     public Product save(Product product){
-        return productRepo.save(product);
+        Product savedProduct = productRepo.save(product);
+        Inventory inventory = new Inventory();
+        inventory.setProduct(product);
+        inventory.setCapacity(0);
+        inventoryRepo.save(inventory);
+        return savedProduct;
     }
 
     public Product update(Long id, Product product){

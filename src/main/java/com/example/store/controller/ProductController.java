@@ -1,5 +1,6 @@
 package com.example.store.controller;
 
+import com.example.store.dto.response.ProductResponseDto;
 import com.example.store.entity.Product;
 import com.example.store.repository.ProductRepo;
 import com.example.store.service.ProductService;
@@ -19,9 +20,9 @@ public class ProductController {
 
 
     @GetMapping("/all")
-    public Page<Product> getPage(
+    public Page<ProductResponseDto> getPage(
             @PageableDefault(size = 8, sort = "name", direction = Sort.Direction.ASC) Pageable pageable){
-        return productService.getAll(pageable);
+        return productService.getAllProducts(pageable);
     }
 
     @GetMapping("/get-{id}")

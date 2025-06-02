@@ -16,7 +16,7 @@ public class Inventory {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "productID", nullable = false, unique = true )
+    @JoinColumn(name = "product_id", nullable = false, unique = true )
     private Product product;
 
     private int capacity;
