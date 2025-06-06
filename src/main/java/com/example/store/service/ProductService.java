@@ -3,8 +3,10 @@ package com.example.store.service;
 import com.example.store.dto.response.ProductResponseDto;
 import com.example.store.entity.Inventory;
 import com.example.store.entity.Product;
+import com.example.store.entity.Review;
 import com.example.store.repository.InventoryRepo;
 import com.example.store.repository.ProductRepo;
+import com.example.store.repository.ReviewRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProductService {
     private final ProductRepo productRepo;
     private final InventoryRepo inventoryRepo;
+    private final ReviewRepo reviewRepo;
 
     public Page<Product> getAll(Pageable pageable){
         return productRepo.findAll(pageable);
@@ -37,6 +40,9 @@ public class ProductService {
         inventory.setProduct(product);
         inventory.setCapacity(0);
         inventoryRepo.save(inventory);
+        Review review = new Review();
+        review.setProduct(product);
+        reviewRepo.save(review);
         return savedProduct;
     }
 

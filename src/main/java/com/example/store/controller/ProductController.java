@@ -21,7 +21,7 @@ public class ProductController {
 
     @GetMapping("/all")
     public Page<ProductResponseDto> getPage(
-            @PageableDefault(size = 8, sort = "name", direction = Sort.Direction.ASC) Pageable pageable){
+            @PageableDefault(size = 8, direction = Sort.Direction.ASC) Pageable pageable){
         return productService.getAllProducts(pageable);
     }
 
