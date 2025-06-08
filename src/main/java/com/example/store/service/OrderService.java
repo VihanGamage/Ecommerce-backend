@@ -1,6 +1,8 @@
 package com.example.store.service;
 
 import com.example.store.dto.request.OrderRequestDto;
+import com.example.store.dto.response.ProductAndPriceDto;
+import com.example.store.dto.response.ProductResponseDto;
 import com.example.store.entity.*;
 import com.example.store.exception.InsufficientInventoryException;
 import com.example.store.repository.AppUserRepo;
@@ -8,11 +10,14 @@ import com.example.store.repository.InventoryRepo;
 import com.example.store.repository.OrderRepo;
 import com.example.store.repository.ProductRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -58,4 +63,15 @@ public class OrderService {
         }
 
     }
+
+    public Page<ProductAndPriceDto> getProductAndPrice(Pageable pageable){
+        return productRepo.findAll(pageable).map(
+                product -> new ProductAndPriceDto(
+                        product.getName(),
+                        product.getPrice()
+                )
+        );
+    }
+
+
 }
