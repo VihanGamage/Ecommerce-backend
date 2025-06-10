@@ -1,6 +1,7 @@
 package com.example.store.controller;
 
 import com.example.store.dto.request.OrderRequestDto;
+import com.example.store.dto.response.AdminOrdersDto;
 import com.example.store.dto.response.ProductAndPriceDto;
 import com.example.store.entity.Order;
 import com.example.store.entity.Product;
@@ -30,6 +31,17 @@ public class OrderController {
     public Page<ProductAndPriceDto> getProductAndPrice(
             @PageableDefault(size = 8, direction = Sort.Direction.ASC) Pageable pageable){
         return orderService.getProductAndPrice(pageable);
+    }
+
+    @GetMapping("/admin-orders")
+    public Page<AdminOrdersDto> getAdminOrders(
+            @PageableDefault(size = 8, direction = Sort.Direction.ASC) Pageable pageable){
+        return orderService.getAdminOrders(pageable);
+    }
+
+    @PatchMapping("/patch-{id}-{orderStatus}")
+    public Order updateOrderStatusByAdmin(@PathVariable Long id, @PathVariable String orderStatus){
+        return orderService.updateOrderStatusByAdmin(id,orderStatus);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.example.store.service;
 
 import com.example.store.dto.request.OrderRequestDto;
+import com.example.store.dto.response.AdminOrdersDto;
 import com.example.store.dto.response.ProductAndPriceDto;
 import com.example.store.dto.response.ProductResponseDto;
 import com.example.store.entity.*;
@@ -71,6 +72,28 @@ public class OrderService {
                         product.getPrice()
                 )
         );
+    }
+
+    public Page<AdminOrdersDto> getAdminOrders(Pageable pageable){
+        return orderRepo.findAll(pageable).map(
+                order -> new AdminOrdersDto(
+                        order.getId(),
+                        order.getAppUser().getUserName(),
+                        order.getProduct().getName(),
+                        order.getProduct().getPrice(),
+                        order.getQuantity(),
+                        order.getTotal(),
+                        order.getOrderStatus(),
+                        order.getPlacedAt()
+                )
+        );
+    }
+
+    public Order updateOrderStatusByAdmin(Long id, String orderStatus){
+        Order order = orderRepo.findById(id).orElseThrow(()-> new RuntimeException("Order not found"));
+        OrderStatus orderStatusEnum = OrderStatus.valueOf(orderStatus);
+        order.setOrderStatus(orderStatusEnum);
+        return orderRepo.save(order);
     }
 
 
