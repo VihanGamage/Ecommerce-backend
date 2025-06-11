@@ -50,7 +50,7 @@ public class ProductService {
         return savedProduct;
     }
 
-    @CacheEvict(value = "products", allEntries = true)
+    @CacheEvict(value = "productPrices", allEntries = true)
     public Product update(Long id, Product product){
         product.setId(id);
         return productRepo.save(product);

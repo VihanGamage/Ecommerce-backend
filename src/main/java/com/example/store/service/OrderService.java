@@ -66,6 +66,7 @@ public class OrderService {
 
     }
 
+    @Cacheable(value = "productPrices", key = "'page=' + #pageable.pageNumber + '&size=' + #pageable.pageSize + '&sort=' + #pageable.sort")
     public Page<ProductAndPriceDto> getProductAndPrice(Pageable pageable){
         return productRepo.findAll(pageable).map(
                 product -> new ProductAndPriceDto(

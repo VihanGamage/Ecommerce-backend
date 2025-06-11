@@ -7,6 +7,8 @@ import com.example.store.entity.Product;
 import com.example.store.repository.InventoryRepo;
 import com.example.store.repository.ProductRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ public class InventoryService {
     private final InventoryRepo inventoryRepo;
     private final ProductRepo productRepo;
 
+    @CacheEvict(value = {"inventoryList"}, allEntries = true)
     public Inventory save(InventoryRequestDto inventoryRequestDTO){
         Product product = productRepo.findByName(inventoryRequestDTO.getName());
         Inventory inventory = new Inventory();
@@ -25,6 +28,7 @@ public class InventoryService {
         return inventoryRepo.save(inventory);
     }
 
+    @Cacheable(value = "inventoryList", key = "'page=' + #pageable.pageNumber + '&size=' + #pageable.pageSize + '&sort=' + #pageable.sort")
     public Page<InventoryResponseDto> getAll(Pageable pageable){
         return inventoryRepo.findAll(pageable)
                 .map(inventory -> new InventoryResponseDto(
@@ -34,6 +38,7 @@ public class InventoryService {
                 ));
     }
 
+    @Cacheable(value = "inventoryById", key = "#id")
     public InventoryResponseDto getInventoryById(Long id){
         return inventoryRepo.findById(id)
         .map(inventory -> new InventoryResponseDto(
@@ -47,6 +52,7 @@ public class InventoryService {
         inventoryRepo.deleteById(id);
     }
 
+    @CacheEvict(value = {"inventoryList", "inventoryById"}, allEntries = true)
     public Inventory update(Long id, int capacity){
         Inventory inventory = inventoryRepo.findById(id).orElse(null);
         inventory.setCapacity(capacity);
