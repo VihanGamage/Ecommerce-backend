@@ -37,7 +37,7 @@ public class ProductService {
                 ));
     }
 
-    @CacheEvict(value = "products", allEntries = true )
+    @CacheEvict(value = {"products","inventoryList"}, allEntries = true )
     public Product save(Product product){
         Product savedProduct = productRepo.save(product);
         Inventory inventory = new Inventory();
