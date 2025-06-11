@@ -12,6 +12,7 @@ import com.example.store.repository.InventoryRepo;
 import com.example.store.repository.OrderRepo;
 import com.example.store.repository.ProductRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -74,6 +75,7 @@ public class OrderService {
         );
     }
 
+    @Cacheable(value = "adminOrders", key = "#pageable.pageNumber")
     public Page<AdminOrdersDto> getAdminOrders(Pageable pageable){
         return orderRepo.findAll(pageable).map(
                 order -> new AdminOrdersDto(
@@ -96,6 +98,7 @@ public class OrderService {
         return orderRepo.save(order);
     }
 
+    @Cacheable(value = "userOrders", key = "#userName")
     public List<UserOrdersDto> getUserOrders(String userName){
         AppUser appUser = appUserRepo.findByUserName(userName);
         return orderRepo.findOrdersByAppUser(appUser).stream().map(
