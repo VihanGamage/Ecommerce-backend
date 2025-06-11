@@ -35,7 +35,7 @@ public class OrderService {
 
         if (appUserRepo.existsAppUserByUserName(orderRequestDto.getName())){
             AppUser appUser = appUserRepo.findByUserName(orderRequestDto.getName());
-            appUserRepo.save(appUser);
+            //appUserRepo.save(appUser);
             order.setAppUser(appUser);
         }else {
             AppUser appUser = new AppUser();
