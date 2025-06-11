@@ -8,6 +8,8 @@ import com.example.store.repository.InventoryRepo;
 import com.example.store.repository.ProductRepo;
 import com.example.store.repository.ReviewRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,7 @@ public class ProductService {
         return productRepo.findAll(pageable);
     }
 
+    @Cacheable(value = "products", key = "#pageable.pageNumber + '-' + #pageable.pageSize + '-' + #pageable.sort")
     public Page<ProductResponseDto> getAllProducts(Pageable pageable){
         return productRepo.findAll(pageable)
                 .map(product -> new ProductResponseDto(
@@ -34,6 +37,7 @@ public class ProductService {
                 ));
     }
 
+    @CacheEvict(value = "products", allEntries = true )
     public Product save(Product product){
         Product savedProduct = productRepo.save(product);
         Inventory inventory = new Inventory();
@@ -46,11 +50,13 @@ public class ProductService {
         return savedProduct;
     }
 
+    @CacheEvict(value = "products", allEntries = true)
     public Product update(Long id, Product product){
         product.setId(id);
         return productRepo.save(product);
     }
 
+    @CacheEvict(value = "products", allEntries = true)
     @Transactional
     public void deleteById(Long id){
         inventoryRepo.deleteByProductId(id);
