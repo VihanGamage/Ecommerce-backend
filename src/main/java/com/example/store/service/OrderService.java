@@ -4,6 +4,7 @@ import com.example.store.dto.request.OrderRequestDto;
 import com.example.store.dto.response.AdminOrdersDto;
 import com.example.store.dto.response.ProductAndPriceDto;
 import com.example.store.dto.response.ProductResponseDto;
+import com.example.store.dto.response.UserOrdersDto;
 import com.example.store.entity.*;
 import com.example.store.exception.InsufficientInventoryException;
 import com.example.store.repository.AppUserRepo;
@@ -95,6 +96,29 @@ public class OrderService {
         order.setOrderStatus(orderStatusEnum);
         return orderRepo.save(order);
     }
+
+    public List<UserOrdersDto> getUserOrders(String userName){
+        AppUser appUser = appUserRepo.findByUserName(userName);
+        return orderRepo.findOrdersByAppUser(appUser).stream().map(
+                order -> new UserOrdersDto(
+                        order.getId(),
+                        order.getProduct().getName(),
+                        order.getQuantity(),
+                        order.getTotal(),
+                        order.getOrderStatus(),
+                        order.getPlacedAt()
+                )
+        ).toList();
+    }
+
+    public Order cancelOrderByUser(Long id){
+        Order order = orderRepo.findOrderById(id);
+        order.setOrderStatus(OrderStatus.CANCELLED);
+        return orderRepo.save(order);
+    }
+
+
+
 
 
 }
