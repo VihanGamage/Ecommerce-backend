@@ -124,7 +124,10 @@ public class OrderService {
         ).toList();
     }
 
-    @CacheEvict(value = "userOrders", allEntries = true)
+    @Caching(evict = {
+            @CacheEvict(value = "userOrders", allEntries = true),
+            @CacheEvict(value = "adminOrders" , allEntries = true)
+    })
     public Order cancelOrderByUser(Long id){
         Order order = orderRepo.findOrderById(id);
         order.setOrderStatus(OrderStatus.CANCELLED);
