@@ -9,6 +9,7 @@ import com.example.store.repository.ProductRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,14 +20,14 @@ public class InventoryService {
     private final InventoryRepo inventoryRepo;
     private final ProductRepo productRepo;
 
-    @CacheEvict(value = {"inventoryList"}, allEntries = true)
-    public Inventory save(InventoryRequestDto inventoryRequestDTO){
-        Product product = productRepo.findByName(inventoryRequestDTO.getName());
-        Inventory inventory = new Inventory();
-        inventory.setProduct(product);
-        inventory.setCapacity(inventoryRequestDTO.getCapacity());
-        return inventoryRepo.save(inventory);
-    }
+//    @CacheEvict(value = {"inventoryList"}, allEntries = true)
+//    public Inventory save(InventoryRequestDto inventoryRequestDTO){
+//        Product product = productRepo.findByName(inventoryRequestDTO.getName());
+//        Inventory inventory = new Inventory();
+//        inventory.setProduct(product);
+//        inventory.setCapacity(inventoryRequestDTO.getCapacity());
+//        return inventoryRepo.save(inventory);
+//    }
 
     @Cacheable(value = "inventoryList", key = "'page=' + #pageable.pageNumber + '&size=' + #pageable.pageSize + '&sort=' + #pageable.sort")
     public Page<InventoryResponseDto> getAll(Pageable pageable){
@@ -48,6 +49,7 @@ public class InventoryService {
             )).orElse(null);
     }
 
+    @CacheEvict(value = "inventoryList", allEntries = true)//productPrices
     public void delete(Long id){
         inventoryRepo.deleteById(id);
     }

@@ -28,10 +28,10 @@ public class InventoryController {
         return inventoryService.getInventoryById(id);
     }
 
-    @PostMapping("/save")
-    public Inventory save(@RequestBody InventoryRequestDto inventoryRequestDTO){
-        return inventoryService.save(inventoryRequestDTO);
-    }
+//    @PostMapping("/save")
+//    public Inventory save(@RequestBody InventoryRequestDto inventoryRequestDTO){
+//        return inventoryService.save(inventoryRequestDTO);
+//    }
 
     @DeleteMapping("/delete-{id}")
     public void delete(@PathVariable Long id){

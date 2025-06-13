@@ -23,9 +23,9 @@ public class ProductService {
     private final InventoryRepo inventoryRepo;
     private final ReviewRepo reviewRepo;
 
-    public Page<Product> getAll(Pageable pageable){
-        return productRepo.findAll(pageable);
-    }
+//    public Page<Product> getAll(Pageable pageable){
+//        return productRepo.findAll(pageable);
+//    }
 
     @Cacheable(value = "products", key = "#pageable.pageNumber + '-' + #pageable.pageSize + '-' + #pageable.sort")
     public Page<ProductResponseDto> getAllProducts(Pageable pageable){
@@ -42,7 +42,7 @@ public class ProductService {
         Product savedProduct = productRepo.save(product);
         Inventory inventory = new Inventory();
         inventory.setProduct(product);
-        inventory.setCapacity(0);
+        inventory.setCapacity(100);
         inventoryRepo.save(inventory);
         Review review = new Review();
         review.setProduct(product);
@@ -50,7 +50,7 @@ public class ProductService {
         return savedProduct;
     }
 
-    @CacheEvict(value = "productPrices", allEntries = true)
+    @CacheEvict(value = {"products","productPrices"}, allEntries = true)
     public Product update(Long id, Product product){
         product.setId(id);
         return productRepo.save(product);

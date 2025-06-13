@@ -10,6 +10,7 @@ import com.example.store.repository.ReviewRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,11 @@ public class ReviewService {
     private final ReviewRepo reviewRepo;
     private final ProductRepo productRepo;
 
-    @CacheEvict(value = "reviews", key = "#productName")
+
+    @Caching(evict = {
+            @CacheEvict(value = "reviews", key = "#productName"),
+            @CacheEvict(value = "reviewCounts" , allEntries = true)
+    })
     public Review saveReview(ReviewAddDto reviewAddDto, String productName){
         Review review = new Review();
         review.setProduct(productRepo.findByName(productName));

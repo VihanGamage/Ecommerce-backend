@@ -12,7 +12,9 @@ import com.example.store.repository.InventoryRepo;
 import com.example.store.repository.OrderRepo;
 import com.example.store.repository.ProductRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,10 @@ public class OrderService {
     private final AppUserRepo appUserRepo;
     private final InventoryRepo inventoryRepo;
 
+    @Caching(evict = {
+            @CacheEvict(value = "userOrders", allEntries = true),
+            @CacheEvict(value = "adminOrders" , allEntries = true)
+    })
     @Transactional
     public Order createOrder(OrderRequestDto orderRequestDto){
         Order order = new Order();
@@ -92,6 +98,10 @@ public class OrderService {
         );
     }
 
+    @Caching(evict = {
+            @CacheEvict(value = "userOrders", allEntries = true),
+            @CacheEvict(value = "adminOrders" , allEntries = true)
+    })
     public Order updateOrderStatusByAdmin(Long id, String orderStatus){
         Order order = orderRepo.findById(id).orElseThrow(()-> new RuntimeException("Order not found"));
         OrderStatus orderStatusEnum = OrderStatus.valueOf(orderStatus);
@@ -114,6 +124,7 @@ public class OrderService {
         ).toList();
     }
 
+    @CacheEvict(value = "userOrders", allEntries = true)
     public Order cancelOrderByUser(Long id){
         Order order = orderRepo.findOrderById(id);
         order.setOrderStatus(OrderStatus.CANCELLED);
