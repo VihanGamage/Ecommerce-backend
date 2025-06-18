@@ -32,10 +32,8 @@ public class OrderService {
     private final AppUserRepo appUserRepo;
     private final InventoryRepo inventoryRepo;
 
-    @Caching(evict = {
-            @CacheEvict(value = "userOrders", allEntries = true),
-            @CacheEvict(value = "adminOrders" , allEntries = true)
-    })
+
+    @CacheEvict(value = {"userOrders","inventoryList","adminOrders"}, allEntries = true)
     @Transactional
     public Order createOrder(OrderRequestDto orderRequestDto){
         Order order = new Order();
@@ -98,10 +96,8 @@ public class OrderService {
         );
     }
 
-    @Caching(evict = {
-            @CacheEvict(value = "userOrders", allEntries = true),
-            @CacheEvict(value = "adminOrders" , allEntries = true)
-    })
+
+    @CacheEvict(value = {"userOrders","adminOrders"}, allEntries = true)
     public Order updateOrderStatusByAdmin(Long id, String orderStatus){
         Order order = orderRepo.findById(id).orElseThrow(()-> new RuntimeException("Order not found"));
         OrderStatus orderStatusEnum = OrderStatus.valueOf(orderStatus);
@@ -124,10 +120,8 @@ public class OrderService {
         ).toList();
     }
 
-    @Caching(evict = {
-            @CacheEvict(value = "userOrders", allEntries = true),
-            @CacheEvict(value = "adminOrders" , allEntries = true)
-    })
+
+    @CacheEvict(value = {"userOrders","adminOrders"}, allEntries = true)
     public Order cancelOrderByUser(Long id){
         Order order = orderRepo.findOrderById(id);
         order.setOrderStatus(OrderStatus.CANCELLED);
