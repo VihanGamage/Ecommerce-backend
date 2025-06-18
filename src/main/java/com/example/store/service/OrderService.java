@@ -121,10 +121,15 @@ public class OrderService {
     }
 
 
-    @CacheEvict(value = {"userOrders","adminOrders"}, allEntries = true)
+    @CacheEvict(value = {"userOrders","adminOrders","inventoryList"}, allEntries = true)
     public Order cancelOrderByUser(Long id){
         Order order = orderRepo.findOrderById(id);
         order.setOrderStatus(OrderStatus.CANCELLED);
+        Product product = order.getProduct();
+        Inventory inventory = inventoryRepo.findByProduct(product);
+        int newCapacity = order.getQuantity() + inventory.getCapacity();
+        inventory.setCapacity(newCapacity);
+        inventoryRepo.save(inventory);
         return orderRepo.save(order);
     }
 
