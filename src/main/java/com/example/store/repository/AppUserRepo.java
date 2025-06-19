@@ -9,4 +9,7 @@ public interface AppUserRepo extends JpaRepository<AppUser,Long> {
 
     boolean existsAppUserByUserName(String name);
 
+    AppUser findByUserNameContainingIgnoreCase(String userName);
+
+
 }

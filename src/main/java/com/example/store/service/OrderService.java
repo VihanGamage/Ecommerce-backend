@@ -115,7 +115,7 @@ public class OrderService {
 
     @Cacheable(value = "userOrders", key = "#userName")
     public List<UserOrdersDto> getUserOrders(String userName){
-        AppUser appUser = appUserRepo.findByUserName(userName);
+        AppUser appUser = appUserRepo.findByUserNameContainingIgnoreCase(userName);
         return orderRepo.findOrdersByAppUser(appUser).stream().map(
                 order -> new UserOrdersDto(
                         order.getId(),
