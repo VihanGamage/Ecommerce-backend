@@ -80,20 +80,28 @@ public class OrderService {
         );
     }
 
-    @Cacheable(value = "adminOrders", key = "#pageable.pageNumber")
-    public Page<AdminOrdersDto> getAdminOrders(Pageable pageable){
-        return orderRepo.findAll(pageable).map(
-                order -> new AdminOrdersDto(
-                        order.getId(),
-                        order.getAppUser().getUserName(),
-                        order.getProduct().getName(),
-                        order.getProduct().getPrice(),
-                        order.getQuantity(),
-                        order.getTotal(),
-                        order.getOrderStatus(),
-                        order.getPlacedAt()
-                )
+    private AdminOrdersDto ordersMapToDto(Order order){
+        return new AdminOrdersDto(
+                order.getId(),
+                order.getAppUser().getUserName(),
+                order.getProduct().getName(),
+                order.getProduct().getPrice(),
+                order.getQuantity(),
+                order.getTotal(),
+                order.getOrderStatus(),
+                order.getPlacedAt()
         );
+    }
+
+    @Cacheable(value = "adminOrders", key = "#userName+'-'+#pageable.pageNumber")
+    public Page<AdminOrdersDto> getAdminOrders(String userName ,Pageable pageable){
+        Page<Order> orders;
+        if (userName==null || userName.isBlank()) {
+            orders = orderRepo.findAll(pageable);
+        }else {
+            orders = orderRepo.findByAppUser_UserNameContainingIgnoreCase(userName,pageable);
+        }
+        return orders.map(this::ordersMapToDto);
     }
 
 

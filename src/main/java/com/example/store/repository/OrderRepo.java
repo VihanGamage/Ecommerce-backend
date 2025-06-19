@@ -16,4 +16,8 @@ public interface OrderRepo extends JpaRepository<Order,Long> {
     List<Order> findOrdersByAppUser(AppUser appUser);
 
     Order findOrderById(Long id);
+
+    Page<Order> findByAppUser_UserNameContainingIgnoreCase(String appUserUserName, Pageable pageable);
+
+
 }

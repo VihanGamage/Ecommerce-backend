@@ -36,8 +36,9 @@ public class OrderController {
 
     @GetMapping("/admin-orders")
     public Page<AdminOrdersDto> getAdminOrders(
+            @RequestParam(required = false) String userName,
             @PageableDefault(size = 8, direction = Sort.Direction.ASC) Pageable pageable){
-        return orderService.getAdminOrders(pageable);
+        return orderService.getAdminOrders(userName, pageable);
     }
 
     @PatchMapping("/patch-{id}-{orderStatus}")
