@@ -18,7 +18,7 @@ public class WebConfig {
                             "http://localhost:3000", // for local dev
                             "https://lively-tree-0257d6e00.6.azurestaticapps.net"
                             )
-                        .allowedMethods("GET","POST","PATCH","PUT","DELETE")
+                        .allowedMethods("GET","POST","PATCH","PUT","DELETE","OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
             }
