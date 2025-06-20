@@ -1,5 +1,6 @@
 package com.example.store.controller;
 
+import com.example.store.dto.request.LoginRequestDto;
 import com.example.store.dto.request.RegisterRequestDto;
 import com.example.store.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -18,4 +19,10 @@ public class AuthController {
     public void register(@RequestBody RegisterRequestDto registerRequestDto){
         authService.register(registerRequestDto);
     }
+
+    @PostMapping("/login")
+    public boolean login(@RequestBody LoginRequestDto loginRequestDto){
+        return authService.login(loginRequestDto);
+    }
+
 }

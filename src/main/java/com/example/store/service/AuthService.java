@@ -1,5 +1,6 @@
 package com.example.store.service;
 
+import com.example.store.dto.request.LoginRequestDto;
 import com.example.store.dto.request.RegisterRequestDto;
 import com.example.store.entity.AppUser;
 import com.example.store.entity.Role;
@@ -26,6 +27,14 @@ public class AuthService {
         }
     }
 
-
+    public boolean login(LoginRequestDto loginRequestDto){
+        String userName = loginRequestDto.getUserName();
+        String password = loginRequestDto.getPassword();
+        AppUser appUser = appUserRepo.findByUserName(userName);
+        if (appUser==null){
+            return false;
+        }
+        return passwordEncoder.matches(password, appUser.getPassword());
+    }
 
 }
