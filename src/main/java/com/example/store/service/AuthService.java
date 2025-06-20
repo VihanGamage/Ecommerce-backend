@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthService {
     private final AppUserRepo appUserRepo;
-    private final PasswordEncoder passwordEncoder;
 
     public void register(RegisterRequestDto registerRequestDto){
         if (appUserRepo.existsAppUserByUserName(registerRequestDto.getUserName())){
@@ -21,7 +20,7 @@ public class AuthService {
         }else {
             AppUser appUser = new AppUser();
             appUser.setUserName(registerRequestDto.getUserName());
-            appUser.setPassword(passwordEncoder.encode(registerRequestDto.getPassword()));
+            appUser.setPassword(registerRequestDto.getPassword());
             appUser.setRole(Role.CUSTOMER);
             appUserRepo.save(appUser);
         }
@@ -34,7 +33,7 @@ public class AuthService {
         if (appUser==null){
             return false;
         }
-        return passwordEncoder.matches(password, appUser.getPassword());
+        return (password.equals(appUser.getPassword()));
     }
 
 }
