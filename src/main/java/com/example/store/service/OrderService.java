@@ -44,7 +44,6 @@ public class OrderService {
         }else {
             AppUser appUser = new AppUser();
             appUser.setUserName(orderRequestDto.getName());
-            appUser.setAddress(orderRequestDto.getAddress());
             appUserRepo.save(appUser);
             order.setAppUser(appUser);
         }
