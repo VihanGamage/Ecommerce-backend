@@ -2,6 +2,7 @@ package com.example.store.controller;
 
 import com.example.store.dto.request.LoginRequestDto;
 import com.example.store.dto.request.RegisterRequestDto;
+import com.example.store.dto.response.JwtResponseDto;
 import com.example.store.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +22,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public boolean login(@RequestBody LoginRequestDto loginRequestDto){
+    public JwtResponseDto login(@RequestBody LoginRequestDto loginRequestDto){
         return authService.login(loginRequestDto);
     }
 
