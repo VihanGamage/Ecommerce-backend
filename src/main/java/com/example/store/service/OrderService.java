@@ -17,6 +17,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,15 +40,10 @@ public class OrderService {
     public Order createOrder(OrderRequestDto orderRequestDto){
         Order order = new Order();
 
-        if (appUserRepo.existsAppUserByUserName(orderRequestDto.getName())){
-            AppUser appUser = appUserRepo.findByUserName(orderRequestDto.getName());
-            order.setAppUser(appUser);
-        }else {
-            AppUser appUser = new AppUser();
-            appUser.setUserName(orderRequestDto.getName());
-            appUserRepo.save(appUser);
-            order.setAppUser(appUser);
-        }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+        AppUser appUser = appUserRepo.findByUserName(userName);
+        order.setAppUser(appUser);
 
         Product product = productRepo.findByName(orderRequestDto.getProductName());
         order.setProduct(product);
@@ -61,6 +58,7 @@ public class OrderService {
             order.setTotal(BigDecimal.valueOf(productPrice* orderRequestDto.getQuantity()));
             order.setOrderStatus(OrderStatus.PENDING);
             order.setPlacedAt(LocalDateTime.now());
+            order.setAddress(orderRequestDto.getAddress());
             return orderRepo.save(order);
         }else {
             throw new InsufficientInventoryException("Not enough stock " +

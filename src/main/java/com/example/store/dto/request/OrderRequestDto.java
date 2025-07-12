@@ -6,7 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class OrderRequestDto {
-    private String name;
     private String address;
     private int quantity;
     private String productName;

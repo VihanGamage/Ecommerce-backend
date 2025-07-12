@@ -23,6 +23,7 @@ public class Order {
 
     private BigDecimal total;
     private LocalDateTime placedAt;
+    private String address;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
