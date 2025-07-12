@@ -13,6 +13,7 @@ public class UserOrdersDto {
     private Long id;
     private String productName;
     private int quantity;
+    private String address;
     private BigDecimal total;
     private OrderStatus orderStatus;
     private LocalDateTime placed_at;

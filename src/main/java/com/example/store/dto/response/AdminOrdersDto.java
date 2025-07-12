@@ -15,6 +15,7 @@ public class AdminOrdersDto {
     private String productName;
     private double price;
     private int quantity;
+    private String address;
     private BigDecimal total;
     private OrderStatus orderStatus;
     private LocalDateTime placed_at;

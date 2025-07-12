@@ -84,6 +84,7 @@ public class OrderService {
                 order.getProduct().getName(),
                 order.getProduct().getPrice(),
                 order.getQuantity(),
+                order.getAddress(),
                 order.getTotal(),
                 order.getOrderStatus(),
                 order.getPlacedAt()
@@ -118,6 +119,7 @@ public class OrderService {
                         order.getId(),
                         order.getProduct().getName(),
                         order.getQuantity(),
+                        order.getAddress(),
                         order.getTotal(),
                         order.getOrderStatus(),
                         order.getPlacedAt()
