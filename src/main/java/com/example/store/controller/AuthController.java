@@ -21,6 +21,7 @@ public class AuthController {
         authService.register(registerRequestDto);
     }
 
+    //login
     @PostMapping("/login")
     public JwtResponseDto login(@RequestBody LoginRequestDto loginRequestDto){
         return authService.login(loginRequestDto);
