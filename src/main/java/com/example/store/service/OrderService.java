@@ -111,9 +111,11 @@ public class OrderService {
         return orderRepo.save(order);
     }
 
-    @Cacheable(value = "userOrders", key = "#userName")
-    public List<UserOrdersDto> getUserOrders(String userName){
-        AppUser appUser = appUserRepo.findByUserNameContainingIgnoreCase(userName);
+    @Cacheable(value = "userOrders")
+    public List<UserOrdersDto> getUserOrders(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+        AppUser appUser = appUserRepo.findByUserName(userName);
         return orderRepo.findOrdersByAppUser(appUser).stream().map(
                 order -> new UserOrdersDto(
                         order.getId(),

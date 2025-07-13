@@ -51,9 +51,9 @@ public class OrderController {
         return orderService.cancelOrderByUser(id);
     }
 
-    @GetMapping("/user-{name}")
-    public List<UserOrdersDto> getUserOrders(@PathVariable String name){
-        return orderService.getUserOrders(name);
+    @GetMapping("/user-orders")
+    public List<UserOrdersDto> getUserOrders(){
+        return orderService.getUserOrders();
     }
 
 
